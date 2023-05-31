@@ -12,48 +12,52 @@
         <h1>화면을 클릭해보세요,,ㅋㅋ</h1>
         <script>
             
-            window.addEventListener('click', spriteEffect) //클릭시 spriteEffect실행
+            window.addEventListener('click', spriteEffect) //1.클릭했을때 spriteEffect가 실행되도록
 
-            function spriteEffect(e) { //spriteEffect 함수 만들기
-                const width = 140 
-                const height = 140
-                const cols = 8
-                const rows = 4
-                let current = 0
-                const intervalGap = 1000 / 30
+            function spriteEffect(e) { //2. 마우스클릭이 일어난 시점에 
 
-                const sprite = document.createElement('div')
-                sprite.style.position = 'absolute'
-                sprite.style.left = e.clientX + 'px'
-                sprite.style.top = e.clientY + 'px'
-                sprite.style.backgroundImage = 'url("./explosion15.png")'
-                sprite.style.width = width + 'px'
-                sprite.style.height = height + 'px'
-                sprite.style.backgroundSize = `${width * cols}px ${height * rows}px`
+                const width = 140 //9. width 와 height설정
+                const height = 140 //9. width 와 height설정
+                const cols = 8 //11. 이미지 cols 수
+                const rows = 4 //11. 이미지 rows 수
+                let current = 0 //14. 인터벌을 만들기 전에 상단에 초기화시키고
+                const intervalGap = 1000 / 30 //21. 1초에 30번을 실행시키기 위한 목적, 30fps로 인터벌을 실행시킨다는 것과 동일한 뜻.
+
+                const sprite = document.createElement('div') //3. 해당 좌표에 스프라이트라는 div엘리먼트를 만들어준다.
+                sprite.style.position = 'absolute' //4.해당 좌표에 띄워주기 위해 position : absolute
+                sprite.style.left = e.clientX + 'px' //5. 좌표는 이벤트값을 인자를 받아와서 
+                sprite.style.top = e.clientY + 'px' //6. 좌표는 이벤트값을 인자를 받아와서 
+                sprite.style.backgroundImage = 'url("./explosion15.png")' //7. 백그라운드 이미지 삽입
+                sprite.style.width = width + 'px' //8. width 와 height설정 //계속 사용될 값이기 때문에 상단에 변수로 설정해준다
+                sprite.style.height = height + 'px' //8. width 와 height설정 //계속 사용될 값이기 때문에 상단에 변수로 설정해준다
+                sprite.style.backgroundSize = `${width * cols}px ${height * rows}px` //10. 백그라운드 사이즈 값 //상단에 변수로 설정
+                // sprite.style.backgroundRepeat = 'no-repeat' //22. 한번루프가 끝나면 보이지 않음. repeat디폴트값을 그대로 두면 계속 재생됨 //
                 sprite.style.transform = `
-                    translate(-50%, -50%)
+                    translate(-50%, -50%) 
                     rotate(${randomNumBetween(0, 360)}deg)
                     scale(${randomNumBetween(0.7, 1.1)})
-                `
-                document.body.append(sprite)
+                ` //12. translate(-50%, -50%) : 마우스 좌표가 이미지 중앙이 되도록
+                //26.  rotate(${randomNumBetween(0, 360)}deg), scale(${randomNumBetween(0.7, 1.1)}) 자연스럽게 연출
 
-                const intervalId = setInterval(() => {
-                    const currentCol = current % cols // 나머지 구하기
-                    const currentRow = Math.floor(current / cols) // 몫 구하기
+                document.body.append(sprite) //13. 바디안에 집어넣기
 
-                    sprite.style.backgroundPosition = 
-                    `${-width * currentCol}px ${-height * currentRow}px`
+                const intervalId = setInterval(() => { //15. 인터벌을 만듬 => gap을 100미리세컨드로 세팅 : const intervalId = setInterval(() => {}.100)
+                    const currentCol = current % cols //16. 몫과 나머지 중에서 먼저 나머지를 currentCol이라는 변수에 다음과 같이 넣어주고
+                    const currentRow = Math.floor(current / cols) //17. 몫을 currentRow라는 변수에 다음과 같이 넣어준다음에
 
-                    if (++current % (rows * cols) === 0) {
-                    clearInterval(intervalId)
-                    document.body.removeChild(sprite)
-                    }
-                }, intervalGap)
+                    sprite.style.backgroundPosition = //18. 백그라운드 포지션에 대입을 해준다.
+                    `${-width * currentCol}px ${-height * currentRow}px` //18. 백그라운드 포지션에 대입을 해준다.
+                    // current++ //19. current 를 매 인터벌마다 증가를 시켜주게되면 // 24. 한줄을 줄이기 위해 같은 의미지만 if문 안 current 앞에 ++를 붙여줌
+                    if (++current % (rows * cols) === 0){ 
+                        clearInterval(intervalId)
+                        document.body.removeChild(sprite)
+                    }//23. 22번 대신 쓸수있는 if문 / current % (rows * cols) 가 0이면 즉, current값이 한번 루프가 끝났을때는 경우에 따라서 인터벌을 종료시키고 돔에서 다음과 같이 제거를 시켜준다. / current앞에 ++를 갖져다 놓음
+                }, intervalGap) //20.  const intervalId = setInterval(() => {}.100)으로 설정되어있던 interval gap을 변수로 설정
             }
 
             function randomNumBetween (min, max) {
             return Math.random() * (max - min) + min
-            }
+            } //25. 자연스러운 연출을 원한다면 랜덤 함수를 추가적으로 만들어서 다음과 같이 세팅을 해주면 된다.
 
         </script>
     </body>
